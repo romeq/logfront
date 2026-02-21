@@ -10,7 +10,6 @@ import (
 	"github.com/romeq/logfront/internal/pipeline"
 	"github.com/romeq/logfront/internal/sources"
 	"github.com/romeq/logfront/internal/sources/ftp"
-	"github.com/romeq/logfront/internal/sources/lastenareena"
 	"github.com/romeq/logfront/internal/sources/ssh"
 )
 
