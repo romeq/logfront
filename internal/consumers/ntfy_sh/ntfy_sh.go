@@ -4,17 +4,21 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/romeq/logfront/internal/consumers"
 	"github.com/romeq/logfront/internal/domain"
 )
 
-const ConfigName = "ntfy_sh"
+const (
+	ConfigName = "ntfy_sh"
+)
 
-type NtfyshConsumer struct {
-	Webhook string
+type Config struct {
+	Urls []interface{} `yaml:"urls"`
 }
 
-func (s NtfyshConsumer) Name() string {
-	return ConfigName
+// newConfig should initialize and verify the config.
+func newConfig(rawConfig consumers.ConsumerConfigType) (Config, error) {
+	return consumers.ParseConfig[Config](rawConfig)
 }
 
 func (s NtfyshConsumer) Consume(ctx context.Context, e domain.FailedLoginEvent) error {

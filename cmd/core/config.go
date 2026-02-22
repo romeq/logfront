@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/romeq/logfront/internal/consumers"
 	"github.com/romeq/logfront/internal/sources"
 	"gopkg.in/yaml.v3"
 )
 
 type AppConfig struct {
-	Sources  map[string]sources.SourceConfigType `yaml:"sources"`
-	Services map[string]sources.SourceConfigType `yaml:"services"`
+	Sources   map[string]sources.SourceConfigType     `yaml:"sources"`
+	Consumers map[string]consumers.ConsumerConfigType `yaml:"services"`
 }
 
 func parseConfig(location string) (AppConfig, error) {
