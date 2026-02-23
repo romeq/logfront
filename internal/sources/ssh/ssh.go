@@ -22,7 +22,7 @@ func NewConfig(config sources.SourceConfigType) Config {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	if cfg.Consumers == nil || len(cfg.Consumers) == 0 {
+	if len(cfg.Consumers) == 0 {
 		log.Fatalln("No consumers defined for", ConfigName)
 	}
 	return cfg
@@ -39,5 +39,5 @@ func (s Source) Start(ctx context.Context, out map[string]chan domain.FailedLogi
 		}
 	}
 
-	return fmt.Errorf("Aborted SSH")
+	return fmt.Errorf("aborted SSH")
 }

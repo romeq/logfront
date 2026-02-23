@@ -2,7 +2,6 @@ package ftp
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -23,7 +22,7 @@ func NewConfig(config sources.SourceConfigType) Config {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	if cfg.Consumers == nil || len(cfg.Consumers) == 0 {
+	if len(cfg.Consumers) == 0 {
 		log.Fatalln("No consumers defined for", ConfigName)
 	}
 	return cfg
@@ -40,5 +39,5 @@ func (s *Source) Start(ctx context.Context, out map[string]chan domain.FailedLog
 			}
 		}
 	}
-	return fmt.Errorf("Aborted FTP")
+	//return fmt.Errorf("aborted FTP")
 }
