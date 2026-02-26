@@ -1,6 +1,8 @@
 package consumers
 
-import "gopkg.in/yaml.v3"
+import (
+	"gopkg.in/yaml.v3"
+)
 
 // ParseConfig Marshals and Unmarshals a config to a given model
 func ParseConfig[T interface{}](config ConsumerConfigType) (T, error) {

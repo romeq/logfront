@@ -15,7 +15,7 @@ func NewDispatcher(consumers []domain.Consumer) *Dispatcher {
 	return &Dispatcher{consumers: consumers}
 }
 
-func (d *Dispatcher) Run(ctx context.Context, in map[string]chan domain.FailedLoginEvent) {
+func (d *Dispatcher) Run(ctx context.Context, in map[string]chan domain.LogEvent) {
 	for _, inChannel := range in {
 		select {
 		case <-ctx.Done():
@@ -25,7 +25,8 @@ func (d *Dispatcher) Run(ctx context.Context, in map[string]chan domain.FailedLo
 				go func() {
 					err := c.Consume(ctx, event)
 					if err != nil {
-						log.Println(err)
+						log.Printf("consumer '%s' returned error when consuming '%s': %s\n", c.Name(), event.Source, err)
+						log.Println(event)
 					}
 				}()
 			}

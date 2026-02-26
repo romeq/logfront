@@ -28,16 +28,14 @@ func NewConfig(config sources.SourceConfigType) Config {
 	return cfg
 }
 
-func (s Source) Start(ctx context.Context, out map[string]chan domain.FailedLoginEvent) error {
-	// tail file
-	// parse failed login
-
-	// send the failed login to each consumer
-	for _, consumer := range s.config.Consumers {
-		out[consumer.(string)] <- domain.FailedLoginEvent{
-			Source: ConfigName,
+func (s Source) Start(ctx context.Context, out domain.EventMapChannel) error {
+	if s.config.Systemd {
+		return fmt.Errorf("systemd not supported yet")
+	}
+	if s.config.Logfile != "" {
+		if err := s.StartWithLogfile(ctx, out, ""); err != nil {
+			return err
 		}
 	}
-
-	return fmt.Errorf("aborted SSH")
+	return nil
 }

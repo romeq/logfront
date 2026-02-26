@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	args := parseArguments()
 	config, err := parseConfig(args.configFile)
 	if err != nil {
@@ -33,9 +35,9 @@ func main() {
 	}
 
 	// create event channels for each consumer
-	events := map[string]chan domain.FailedLoginEvent{}
+	events := map[string]chan domain.LogEvent{}
 	for _, configConsumer := range configConsumers {
-		events[configConsumer.Name()] = make(chan domain.FailedLoginEvent)
+		events[configConsumer.Name()] = make(chan domain.LogEvent)
 	}
 
 	// wire things up
