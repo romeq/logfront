@@ -6,9 +6,10 @@ name: Go (Lint, Build, Test)
 on:
   push:
     paths-ignore:
-      - '.github/*.md'
+      - '**.md'
       - '.github/LICENSE'
       - '.gitignore'
+      - '.githooks'
     branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev" ]
