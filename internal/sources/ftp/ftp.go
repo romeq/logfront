@@ -2,8 +2,8 @@ package ftp
 
 import (
 	"context"
+	"fmt"
 	"log"
-	"time"
 
 	"github.com/romeq/logfront/internal/domain"
 	"github.com/romeq/logfront/internal/sources"
@@ -28,16 +28,6 @@ func NewConfig(config sources.SourceConfigType) Config {
 	return cfg
 }
 
-func (s *Source) Start(ctx context.Context, out map[string]chan domain.FailedLoginEvent) error {
-	// tail file
-	// parse failed login
-	for {
-		time.Sleep(time.Second * 1)
-		for _, consumer := range s.config.Consumers {
-			out[consumer.(string)] <- domain.FailedLoginEvent{
-				Source: ConfigName,
-			}
-		}
-	}
-	//return fmt.Errorf("aborted FTP")
+func (s Source) Start(ctx context.Context, out domain.EventMapChannel) error {
+	return fmt.Errorf("ftp not implemented")
 }
