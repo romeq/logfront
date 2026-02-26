@@ -88,10 +88,10 @@ func eventForLine(l string) (domain.LogEvent, bool) {
 		return NewSSHLogEvent(id, username, ip, shorthand, text, parsedTimestamp), true
 	}
 
-	if strings.Contains(l, "Unable to negotiate with") && strings.Contains(l, "no matching key exchange method found. Their offer: diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256 [preauth]") {
+	if strings.Contains(l, "Unable to negotiate with") && strings.Contains(l, "no matching key exchange method found. Their offer: diffie-hellman-group1-sha1,") {
 		ip := text[5]
 		shorthand := "potential recon (key exchange)"
-		return NewSSHLogEvent(id, "NOUID-recon", ip, shorthand, text, parsedTimestamp), true
+		return NewSSHLogEvent(id, "NOUID-potential-recon", ip, shorthand, text, parsedTimestamp), true
 	}
 
 	// TODO: support other config errors as well
