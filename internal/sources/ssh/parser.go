@@ -9,10 +9,14 @@ import (
 	"github.com/romeq/logfront/internal/domain"
 )
 
-func idForLine(l string) string {
+func idForLine(l string) (string, error) {
 	sliced := strings.Split(l, " ")
+	if len(sliced) <= 4 {
+		return "", fmt.Errorf("invalid line")
+	}
+
 	id := strings.Trim(sliced[4], "shd-eion[]:")
-	return id
+	return id, nil
 }
 
 // TODO: return a more detailed report
@@ -51,8 +55,17 @@ func multilineEvents(events []domain.LogEvent) (domain.LogEvent, error) {
 // eventForLine returns a populated struct and a bool indicating whether the struct was populated
 func eventForLine(l string) (domain.LogEvent, bool) {
 	sliced := strings.Split(l, " ")
+	id, err := idForLine(l)
+	if err != nil {
+		log.Println(err)
+		return domain.LogEvent{}, false
+	}
+	if len(sliced) < 6 {
+		log.Println("invalid line:", l)
+		return domain.LogEvent{}, false
+	}
+
 	text := sliced[5:]
-	id := idForLine(l)
 
 	timestamp := strings.Join(sliced[:3], " ")
 	parsedTimestamp, err := time.Parse("Jan 2 15:04:05", timestamp)

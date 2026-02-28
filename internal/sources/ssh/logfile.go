@@ -3,6 +3,7 @@ package ssh
 import (
 	"bufio"
 	"context"
+	"log"
 	"os"
 	"time"
 
@@ -37,7 +38,15 @@ func (s Source) StartLogfileWorker(_ context.Context, out domain.EventMapChannel
 		uncachedEventsById := make(map[string][]domain.LogEvent)
 		for scanner.Scan() {
 			lineText := scanner.Text()
-			if id := idForLine(lineText); cache.Exists(id) {
+
+			id, err := idForLine(lineText)
+			if err != nil {
+				log.Println("couldn't find id for line: ", err)
+				log.Println("scanner error: ", scanner.Err())
+				log.Println("if line is partial, it may be caused by corrupted logfile. \n\tlineText:", lineText)
+				break
+			}
+			if cache.Exists(id) {
 				continue
 			}
 
